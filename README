@@ -1,0 +1,50 @@
+-------------------------------------------------------------------------------
+                                Tema 2 - PP
+-------------------------------------------------------------------------------
+
+AUTOR: Smadu Razvan-Alexandru 325CB
+
+FISIERE INCLUSE:
+    - main.pl
+    - README
+
+README 
+    Implementarea temei:
+        Predicatul getPath() reprezinta punctul de start al programuli si 
+        apeleaza bfs, cu aceiasi parametri. Predicatul bfs aplica algoritmul de 
+        parcurgere in latime, in care este utilizata o coada (implementata cu 
+        lista) ce contine toate drumurile intre From si To care sunt valide. 
+        La inceput, se ia culoarea nodului de start si vede daca se satisface 
+        formula si se pune in coada, in cazul afirmativ. Apoi e apeleaza 
+        predicatul getPathAux() care realizeaza, recursiv, parcurgerea grafului.
+        La final, se unifica Path cu reverse-ul caii celei mai scurte gasite.
+
+        Predicatul getPathAux() extrage din coada o cale cu formula asociata,
+        se cauta vecinii care nu se repenta in acea cale, la ultimul nod din 
+        cale; se creeaza noi cai care includ si nodul respectiv (in cazul in
+        care formula se satisface); se adauga aceste drumuri in coada si se 
+        repeda algoritmul. Atunci cand se gaseste o cale, se incheie executia.
+
+        Pentru eficienta, se evalueaza dinamic formulele. Am implementat 
+        functiile de baza AND, OR si NOT (care sunt evaluate de satFormula())
+        astfel incat sa realizeze scurt-circuite si sa fie compatibile cu 
+        next(). Apoi, am folosit proprietatile de pe wikipedia pentru 
+        implementarea Future, Global si Weak Until. (a se vedea comentariile - 
+        nu sunt caractere ASCII, ci probabil UTF-8 sau ceva de genul acesta).
+        
+        Evaluarea dinamica inseamna ca atunci cand se adauga nodul, se verifica
+        formula si se "returneaza" o noua formula care este echivalenta cu cea 
+        initiala, dar de dimensiunea mai mica (se evalueaza formula cu culoarea
+        nodului curent). De exemplu: 
+        F = and(verde, next(rosu)) si crtColor = verde => newF = rosu 
+
+        Nota: Unele implementari pot avea mici probleme, de exemplu sa cicleze 
+              sau sa dea fail mai devreme (cum este la hard tests, testul 2).
+              La ciclare cel mai probabil poate aparea din cauza implementarii 
+              evaluarii lui NOT (pentru not(future(F)) am scris echivalentul sau
+              care este global(not(F)) care nu cicleaza in aceasta implementare)
+              sau a unor bug-uri greu de gasit la prima vedere. 
+
+    Rezultat local: 118/120, testul 2 de la hard tests era singurul picat, iar 
+    timpul de rulare pe test este sub o secunda.
+
